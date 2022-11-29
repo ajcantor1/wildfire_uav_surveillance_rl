@@ -1,4 +1,4 @@
-from abstact_fire_env import AbstactFireEnv
+from abstract_fire_env import AbstractFireEnv
 import numpy as np
 import random
 height = 100
@@ -18,7 +18,7 @@ def getNeighbors(point):
         neighbors.append((y, x))
     return neighbors
 
-class ProbabilisticFireEnv(AbstactFireEnv):
+class ProbabilisticFireEnv(AbstractFireEnv):
 
   def next_observation(self):
 
