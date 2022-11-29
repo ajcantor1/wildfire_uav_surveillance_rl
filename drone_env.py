@@ -5,6 +5,7 @@ from scipy.ndimage import rotate, shift
 import numpy as np
 import math
 import random
+import random
 
 height = width = 100
 LAMBDA_1 = 0.35
