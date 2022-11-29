@@ -1,3 +1,7 @@
+import torch.nn as nn
+import torch
+import numpy as np
+
 class DQN(nn.Module):
 
   def _get_conv_out(self, shape):
