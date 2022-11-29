@@ -1,4 +1,5 @@
 from abc import ABCMeta, abstractmethod
+import numpy as np
 class AbstactFireEnv(metaclass = ABCMeta):
 
   def __init__(self, _height, _width):

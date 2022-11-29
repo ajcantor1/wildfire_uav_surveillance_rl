@@ -1,4 +1,5 @@
 from abstact_fire_env import AbstactFireEnv
+import numpy as np
 height = 100
 width = 100
 D = 2
