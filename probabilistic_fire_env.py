@@ -1,3 +1,4 @@
+from abstact_fire_env import AbstactFireEnv
 height = 100
 width = 100
 D = 2
