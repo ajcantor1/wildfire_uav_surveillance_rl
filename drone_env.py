@@ -262,33 +262,14 @@ class DronesEnv:
   def _drone_scan(self, drone, fireMap=np.nan):
     
     reward = 0
-    ''' 
-    min_drone_y = int(max(drone.y-self._scan_radius,0))
-    max_drone_y = int(min(drone.y+self._scan_radius, self._height))
 
-    min_drone_x = int(max(drone.x-self._scan_radius,0))
-    max_drone_x = int(min(drone.x+self._scan_radius, self._width))
-    '''
     Y, X = np.ogrid[:height, :width]
     dist_from_center = np.sqrt((X - drone.x)**2 + (Y-drone.y)**2)
     mask = dist_from_center <= self.scan_radius
 
-    #reward = np.count_nonzero(self._belief_map_channel[mask & self._belief_map_channel==0 & fireMap==1])
-    #print(reward)
+    reward = np.count_nonzero(self._belief_map_channel[mask & self._belief_map_channel==0 & fireMap==1])
     self._belief_map_channel[mask] = fireMap[mask]
     
-    ''' 
-    if fireMap.any() != np.nan:
-      for y in range(min_drone_y,  max_drone_y):
-        for x in range(min_drone_x,  max_drone_x):
-          if fireMap[y,x] == 1 and self._belief_map_channel[y,x] == 0:
-            reward += 1
-          self._belief_map_channel[y,x] = fireMap[y,x]
-    '''    
-    #mask = np.ones(shape=(self._height, self._width), dtype=bool)
-    #mask[:] = False
-
-
     self._time_elapsed_channel[mask] = 0
 
     self._time_elapsed_channel[~mask & (self._time_elapsed_channel < 250)] += 1
