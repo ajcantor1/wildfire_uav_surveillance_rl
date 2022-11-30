@@ -153,11 +153,8 @@ class Drone:
     return self._transform_map(self._droneEnv.time_map_channel.copy(), 250.0)/250.0
 
   def _transform_map(self, map, padding_value=0):
-    #matrix = rotate(map, angle=np.rad2deg(self.heading_angle), reshape=False, cval=padding_value)
-    #return matrix[int(self.y)-50:int(self.y)+50, int(self.x)-50:int(self.x)+50]
-    #return shift_matrix(rotate(map, angle=np.rad2deg(self.heading_angle), cval=padding_value), self.x, self.y, padding_value)
     return rotate(shift_matrix(map, self.x, self.y, padding_value), angle=np.rad2deg(self.heading_angle), reshape=False, cval=padding_value)
-    #return rotate(map, angle=np.rad2deg(self.heading_angle), reshape=False, cval=padding_value )
+
   @property
   def observation(self):
     return np.stack((self.time_elasped_map, self.belief_map), axis=0)[np.newaxis,...]
@@ -262,8 +259,6 @@ class DronesEnv:
     self._drone_scan(self._drones[0], fireMap)
     self._drone_scan(self._drones[1], fireMap)
 
-
-    
   def _drone_scan(self, drone, fireMap=np.nan):
     
     reward = 0
@@ -283,7 +278,14 @@ class DronesEnv:
             
     mask = np.ones(shape=(self._height, self._width), dtype=bool)
     mask[:] = False
-    mask[min_drone_y:max_drone_y, min_drone_x:max_drone_x] = True
+
+    scan_angles = np.linspace(-np.pi, np.pi, num=9)
+    for r in range(1, self._scan_radius+1):
+
+      _x = drone.x + r*np.cos(scan_angles)
+      _y = drone.y + r*np.sin(scan_angles)
+
+    mask[int(_y), int(_x)] = True
 
     self._time_elapsed_channel[mask] = 0
 
