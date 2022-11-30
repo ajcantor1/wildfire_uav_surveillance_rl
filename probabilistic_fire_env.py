@@ -39,7 +39,7 @@ class ProbabilisticFireEnv(AbstractFireEnv):
       
       if np.count_nonzero(neighboring_burning_cells) > 0:
         pnm = 1
-        for ny, nx in zip(*np.where(neighboring_burning_cells)):
+        for (ny, nx) in zip(*np.where(neighboring_burning_cells)):
           dnmkl = np.array([y-ny, x-nx])
           norm = np.sum(dnmkl**2)
           pnmkl0 = K/norm
