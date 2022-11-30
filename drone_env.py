@@ -273,8 +273,8 @@ class DronesEnv:
     dist_from_center = np.sqrt((X - drone.x)**2 + (Y-drone.y)**2)
     mask = dist_from_center <= self.scan_radius
 
-    reward = np.count_nonzero(self._belief_map_channel[mask & self._belief_map_channel==0 & fireMap==1])
-    print(reward)
+    #reward = np.count_nonzero(self._belief_map_channel[mask & self._belief_map_channel==0 & fireMap==1])
+    #print(reward)
     self._belief_map_channel[mask] = fireMap[mask]
     
     ''' 
