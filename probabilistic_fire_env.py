@@ -49,7 +49,7 @@ class ProbabilisticFireEnv(AbstractFireEnv):
         pmn = 1 - pnm
         probability_map[y, x] = pmn
 
-    self.observation[probability_map > random.random()] = 1
+    self.observation[probability_map > np.random.rand(height,width)] = 1
     return self.observation
     
     ''' 
