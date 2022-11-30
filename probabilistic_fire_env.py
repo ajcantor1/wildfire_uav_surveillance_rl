@@ -39,7 +39,7 @@ class ProbabilisticFireEnv(AbstractFireEnv):
       
       if np.count_nonzero(neighboring_burning_cells) > 0:
         pnm = 1
-        for ny, nx in np.argwhere(neighboring_burning_cells).tolist():
+        for ny, nx in zip(*np.where(neighboring_burning_cells)):
           dnmkl = np.array([y-ny, x-nx])
           norm = np.sum(dnmkl**2)
           pnmkl0 = K/norm
@@ -52,34 +52,6 @@ class ProbabilisticFireEnv(AbstractFireEnv):
     self.observation[probability_map > np.random.rand(height,width)] = 1
     return self.observation
     
-    ''' 
-    for row in range(self.height):
-      for col in range(self.width):
-        if self.observation[row,col] == 1:
-          if self.fuel[row, col] > 0:
-            self.fuel[row, col] -= 1
-          else:
-            self.observation[row,col] = 0
-
-        elif self.observation[row,col] == 0 and self.fuel[row, col] > 0:
-          neighboring_cells = getNeighbors((row, col))
-          pnm = 1
-          for neighboring_cell in neighboring_cells:
-            if self.observation[neighboring_cell] == 1:
-              dnmkl = np.array([a-b for a, b in zip(neighboring_cell, (row,col))])
-              norm = np.sum(dnmkl**2)
-              pnmkl0 = K/norm
-              pnmklw = K*(dnmkl @ self.wind)/norm 
-              pnmkl  = max(0, min(1, (pnmkl0+pnmklw)))
-              pnm *= (1-pnmkl)
-          pmn = 1 - pnm
-          probability_map[row, col] = pmn
-
-    for row in range(self.height):
-      for col in range(self.width):
-        if probability_map[row, col] > random.random():
-          self.observation[row, col] = 1
-    '''
     return self.observation
 
   def reset_observation(self):
