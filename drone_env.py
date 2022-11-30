@@ -260,8 +260,6 @@ class DronesEnv:
     self._drone_scan(self._drones[1], fireMap)
 
   def _drone_scan(self, drone, fireMap=np.nan):
-    
-    reward = 0
 
     Y, X = np.ogrid[:height, :width]
     dist_from_center = np.sqrt((X - drone.x)**2 + (Y-drone.y)**2)
