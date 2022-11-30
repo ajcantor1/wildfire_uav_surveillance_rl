@@ -276,17 +276,12 @@ class DronesEnv:
             reward += 1
           self._belief_map_channel[y,x] = fireMap[y,x]
             
-    mask = np.ones(shape=(self._height, self._width), dtype=bool)
-    mask[:] = False
+    #mask = np.ones(shape=(self._height, self._width), dtype=bool)
+    #mask[:] = False
 
-    scan_angles = np.linspace(-np.pi, np.pi, num=9)
-    for r in range(1, self._scan_radius+1):
-
-      _x = drone.x + r*np.cos(scan_angles)
-      _y = drone.y + r*np.sin(scan_angles)
-
-    mask[int(_y), int(_x)] = True
-
+    Y, X = np.ogrid[:height, :width]
+    dist_from_center = np.sqrt((X - drone.x)**2 + (Y-drone.y)**2)
+    mask = dist_from_center <= self.scan_radius
     self._time_elapsed_channel[mask] = 0
 
     self._time_elapsed_channel[~mask & (self._time_elapsed_channel < 250)] += 1
