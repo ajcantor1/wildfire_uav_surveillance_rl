@@ -6,37 +6,48 @@ width = 100
 D = 2
 K = 0.05
 
+def getNeighbors(point):
+    neighbors = []
+    min_x = max(0, point[1]-D)
+    max_x = min(99, point[1]+D)
+    min_y = max(0, point[0]-D)
+    max_y = min(99, point[0]+D)
+
+    for y in range(min_y, max_y): 
+      for x in range(min_x, max_x):
+        neighbors.append((y, x))
+    return neighbors
 
 class ProbabilisticFireEnv(AbstractFireEnv):
 
   def next_observation(self):
 
     probability_map = np.zeros(shape=(height,width), dtype=float)
+    for row in range(self.height):
+      for col in range(self.width):
+        if self.observation[row,col] == 1:
+          if self.fuel[row, col] > 0:
+            self.fuel[row, col] -= 1
+          else:
+            self.observation[row,col] = 0
 
-    self.fuel[(self.observation == 1) & (self.fuel > 0)] -= 1
-    
-    self.observation[(self.observation == 1) & (self.fuel == 0)] = 0
+        elif self.observation[row,col] == 0 and self.fuel[row, col] > 0:
+          neighboring_cells = getNeighbors((row, col))
+          pnm = 1
+          for neighboring_cell in neighboring_cells:
+            if self.observation[neighboring_cell] == 1:
+              dnmkl = np.array([a-b for a, b in zip(neighboring_cell, (row,col))])
+              norm = np.sum(dnmkl**2)
+              pnmkl0 = K/norm
+              pnmklw = K*(dnmkl @ self.wind)/norm 
+              pnmkl  = max(0, min(1, (pnmkl0+pnmklw)))
+              pnm *= (1-pnmkl)
+          pmn = 1 - pnm
+          probability_map[row, col] = pmn
 
-    for y, x in zip(*np.where((self.observation == 0) & (self.fuel > 0))):
-      
-      Y, X = np.ogrid[:height, :width]
-      dist_from_cell = np.sqrt((X - x)**2 + (Y-y)**2)
-      neighboring_burning_cells = (dist_from_cell <= D) & (self.observation == 1)
-      if np.count_nonzero(neighboring_burning_cells) > 0:
-        pnm = 1
-        for (ny, nx) in list(zip(*np.where(neighboring_burning_cells))):
-          dnmkl = np.array([y-ny, x-nx])
-          norm = np.sum(dnmkl**2)
-          pnmkl0 = K/norm
-          pnmklw = K*(dnmkl @ self.wind)/norm 
-          pnmkl  = max(0, min(1, (pnmkl0+pnmklw)))
-          pnm *= (1-pnmkl)
-        pmn = 1 - pnm
-        probability_map[y, x] = pmn
+    self.observation = (probability_map > np.random.rand(height,width))
 
-    self.observation[probability_map > np.random.rand(height,width)] = 1
     return self.observation
-    
 
   def reset_observation(self):
     center = [49, 49]
