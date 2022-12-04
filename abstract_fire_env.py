@@ -47,8 +47,8 @@ class AbstractFireEnv(metaclass = ABCMeta):
     self._time_steps = 0
     self.observation = self.reset_observation()
     seed = self.observation.copy()
-    #for _ in range(30):
-    #  self.step()
+    for _ in range(30):
+      self.step()
     return seed
 
   def fire_in_range(self,margin=2):
