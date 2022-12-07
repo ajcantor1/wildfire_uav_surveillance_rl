@@ -5,7 +5,7 @@ from models.basedqn import BaseDQN
 class DRQN(BaseDQN):
 
   def __init__(self, channels, height, width, outputs, hidden_space = 200):
-    super(DRQN, self).__init__(channels, height, width, outputs)
+    super(DRQN, self).__init__(self, channels, height, width, outputs)
 
     self.hidden_space = hidden_space
 
