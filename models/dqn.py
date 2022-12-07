@@ -5,7 +5,7 @@ from models.basedqn import BaseDQN
 class DQN(BaseDQN):
 
   def __init__(self, channels, height, width, outputs):
-    super(DQN, self).__init__(self, channels, height, width, outputs)
+    BaseDQN.__init__(self, channels, height, width, outputs)
 
     self.fc1  = nn.Sequential(
       nn.Linear(5, 100),
