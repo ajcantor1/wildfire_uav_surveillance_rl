@@ -1,12 +1,11 @@
 import torch.nn as nn
 import torch
-import numpy as np
-from basedqn import BaseDQN
+from models.basedqn import BaseDQN
 
 class DRQN(BaseDQN):
 
   def __init__(self, channels, height, width, outputs, hidden_space = 200):
-    super(DRQN, self).__init__(channels, height, width, outputs)
+    super().__init__(channels, height, width, outputs)
 
     self.hidden_space = hidden_space
 
