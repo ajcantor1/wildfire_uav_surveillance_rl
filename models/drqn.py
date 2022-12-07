@@ -60,7 +60,7 @@ class DRQN(BaseDQN):
     return fc3_out, new_hidden_state, new_cell_state
 
 
-  def init_hidden_state(self, training=None, batch_size=1):
+  def init_hidden_state(self, device, training=None, batch_size=1):
 
     if training is True:
         return torch.zeros([1, batch_size, self.hidden_space]), torch.zeros([1, batch_size, self.hidden_space])
