@@ -3,7 +3,7 @@ import torch
 import numpy as np
 from abc import ABCMeta, abstractmethod
 
-class BaseDQN(ABCMeta, nn.Module):
+class BaseDQN(nn.Module, metaclass=ABCMeta):
 
   def _get_conv_out(self):
     o = self.conv(torch.zeros(1, (self.channels, self.height, self.width)))
