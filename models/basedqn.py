@@ -26,7 +26,7 @@ class BaseDQN(ABCMeta, nn.Module):
     return self._outputs
     
   def __init__(self, _channels, _height, _width, _outputs):
-    nn.Module.__init__(self)
+    nn.Module.__init__()
     
     self._channels = _channels
     self._height = _height
