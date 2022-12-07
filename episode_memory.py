@@ -11,7 +11,7 @@ class EpisodeMemory:
     self._episode = ReplayMemory(capicity)
 
   def push(self, *args):
-    self._episode.append(Transition(*args))
+    self._episode.push(Transition(*args))
 
   @property
   def episode(self):
@@ -30,7 +30,7 @@ class EpisodeBuffer:
     self.episodes = deque([],maxlen=self.capicity)
 
   def push(self, episode):
-    self.episodes.push(episode)
+    self.episodes.append(episode)
 
   def sample(self, batch_size):
     
