@@ -65,4 +65,4 @@ class DRQN(BaseDQN):
     if training is True:
         return torch.zeros([1, batch_size, self.hidden_space]), torch.zeros([1, batch_size, self.hidden_space])
     else:
-        return torch.zeros([1, 1, self.hidden_space]), torch.zeros([1, 1, self.hidden_space])
+        return torch.zeros([1, self.hidden_space]), torch.zeros([1, self.hidden_space])
