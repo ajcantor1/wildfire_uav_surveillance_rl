@@ -31,7 +31,7 @@ class DQN(BaseDQN):
       nn.MaxPool2d(2, stride=2)
     )
   
-    conv_out_size = self._get_conv_out((channels,height,width))
+    conv_out_size = self._get_conv_out()
 
     self.fc2 = nn.Sequential(
       nn.Linear(conv_out_size, 500),
