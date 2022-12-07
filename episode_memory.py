@@ -8,20 +8,21 @@ MAX_EPISODE_LENGTH = 200
 class EpisodeMemory:
 
   def __init__(self, capicity=MAX_EPISODE_LENGTH):
-    self.episode = ReplayMemory(capicity)
+    self._episode = ReplayMemory(capicity)
 
   def push(self, *args):
-    self.episode.append(Transition(*args))
+    self._episode.append(Transition(*args))
 
   @property
   def episode(self):
-    return self.episode
+    return self._episode
+
 
   def __getitem__(self, index):
-    return self.episode[int(index)]
+    return self._episode[int(index)]
 
   def __len__(self):
-    return len(self.episode)
+    return len(self._episode)
 
 class EpisodeBuffer:
   def __init__(self, capicity=10000):
