@@ -1,9 +1,8 @@
 import torch.nn as nn
 import torch
 import numpy as np
-from abc import ABCMeta, abstractmethod
 
-class BaseDQN(nn.Module, metaclass=ABCMeta):
+class BaseDQN(nn.Module):
 
   def _get_conv_out(self):
     o = self.conv(torch.zeros(1, (self.channels, self.height, self.width)))
@@ -26,13 +25,12 @@ class BaseDQN(nn.Module, metaclass=ABCMeta):
     return self._outputs
     
   def __init__(self, _channels, _height, _width, _outputs):
-    nn.Module.__init__()
+    super().__init__()
     
     self._channels = _channels
     self._height = _height
     self._width = _width
     self._outputs = _outputs
 
-  @abstractmethod
   def forward(self, belief_map, state_vector):
     pass
