@@ -4,10 +4,10 @@ from models.basedqn import BaseDQN
 
 class DRQN(BaseDQN):
 
-  def __init__(self, channels, height, width, outputs, hidden_space = 200):
-    BaseDQN.__init__(channels, height, width, outputs)
+  def __init__(self, _channels, _height, _width, _outputs, _hidden_space = 200):
+    super().__init__(_channels, _height, _width, _outputs)
 
-    self.hidden_space = hidden_space
+    self.hidden_space = _hidden_space
 
     self.fc1  = nn.Sequential(
       nn.Linear(5, 100),
