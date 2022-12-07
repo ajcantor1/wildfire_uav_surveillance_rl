@@ -5,7 +5,7 @@ import numpy as np
 class BaseDQN(nn.Module):
 
   def _get_conv_out(self):
-    o = self.conv(torch.zeros(1, (self.channels, self.height, self.width)))
+    o = self.conv(torch.zeros(1, self.channels, self.height, self.width))
     return int(np.prod(o.size()))
 
   @property
