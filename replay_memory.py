@@ -1,6 +1,7 @@
-from collections import namedtuple, deque
+from collections import  deque
 import random
-Transition = namedtuple('Transition',('belief_map', 'state_vector', 'action', 'next_belief_map', 'next_state_vector', 'reward'))
+from transition import Transition
+
 class ReplayMemory:
 
   def __init__(self, capacity):
