@@ -11,7 +11,7 @@ class EpisodeMemory:
     self._episode = ReplayMemory(capicity)
 
   def push(self, *args):
-    self._episode.push(Transition(*args))
+    self._episode.push(Transition(*list(args)))
 
   @property
   def episode(self):
