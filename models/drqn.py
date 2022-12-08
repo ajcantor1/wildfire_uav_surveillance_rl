@@ -42,7 +42,7 @@ class DRQN(BaseDQN):
       nn.ReLU(),
     )
 
-    self.ltsm = nn.LSTM(self.hidden_space, self.hidden_space, batch_first=True)
+    self.ltsm = nn.LSTM(self.hidden_space, self.hidden_space)
 
     self.fc3 = nn.Sequential(
       nn.Linear(self.hidden_space, self.hidden_space),
@@ -63,6 +63,6 @@ class DRQN(BaseDQN):
   def init_hidden_state(self, device, training=None, batch_size=1):
 
     if training is True:
-      return torch.zeros([batch_size, self.hidden_space], device=device), torch.zeros([batch_size, self.hidden_space], device=device)
+      return torch.zeros([1, batch_size, self.hidden_space], device=device), torch.zeros([1, batch_size, self.hidden_space], device=device)
     else:
-      return torch.zeros([1, self.hidden_space], device=device), torch.zeros([1, self.hidden_space], device=device)
+      return torch.zeros([1, 1, self.hidden_space], device=device), torch.zeros([1, 1, self.hidden_space], device=device)
