@@ -14,7 +14,7 @@ class EpisodeMemory:
     self._episode.append(Transition(*args))
 
   def __getitem__(self, index):
-    return self._episode[int(index)]
+    return self._episode[index]
 
   def __len__(self):
     return len(self._episode)
