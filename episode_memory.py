@@ -1,17 +1,17 @@
 from collections import  deque
 import random
 from transition import Transition
-from replay_memory import ReplayMemory
+
 
 MAX_EPISODE_LENGTH = 200
 
 class EpisodeMemory:
 
   def __init__(self, capicity=MAX_EPISODE_LENGTH):
-    self._episode = ReplayMemory(capicity)
+    self._episode = deque([],maxlen=capicity)
 
   def push(self, *args):
-    self._episode.push(Transition(*list(args)))
+    self._episode.push(Transition(*args))
 
   def __getitem__(self, index):
     return self._episode[int(index)]
