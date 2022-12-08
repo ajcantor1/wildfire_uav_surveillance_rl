@@ -1,7 +1,7 @@
-from collections import  deque
+from collections import deque
 import random
 from transition import Transition
-
+from itertools import islice
 
 MAX_EPISODE_LENGTH = 200
 
@@ -33,7 +33,7 @@ class EpisodeBuffer:
 
     min_step = min([len(episode) for episode in sample_episodes])
 
-    return [episode[:min_step] for episode in sample_episodes], min_step
+    return [deque(islice(episode, 0, min_step)) for episode in sample_episodes], min_step
     
   def __len__(self):
       return len(self.episodes)
