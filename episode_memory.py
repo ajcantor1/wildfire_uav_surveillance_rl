@@ -17,7 +17,6 @@ class EpisodeMemory:
   def episode(self):
     return self._episode
 
-
   def __getitem__(self, index):
     return self._episode[int(index)]
 
