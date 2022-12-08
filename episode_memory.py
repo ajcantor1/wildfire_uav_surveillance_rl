@@ -7,11 +7,10 @@ MAX_EPISODE_LENGTH = 200
 class EpisodeMemory():
   """Episode memory for recurrent agent"""
 
-  def __init__(self, random_update=False, max_epi_num=100, max_epi_len=200, batch_size=1, lookup_step=None):
+  def __init__(self, random_update=False, max_epi_num=100, max_epi_len=200, lookup_step=None):
     self.random_update = random_update # if False, sequential update
     self.max_epi_num = max_epi_num
     self.max_epi_len = max_epi_len
-    self.batch_size = batch_size
     self.lookup_step = lookup_step
 
 
@@ -20,12 +19,12 @@ class EpisodeMemory():
   def put(self, episode):
     self.memory.append(episode)
 
-  def sample(self):
+  def sample(self, batch_size):
     sampled_buffer = []
 
     ##################### RANDOM UPDATE ############################
     if self.random_update: # Random upodate
-      sampled_episodes = random.sample(self.memory, self.batch_size)
+      sampled_episodes = random.sample(self.memory, batch_size)
       
 
       min_step = self.max_epi_len
