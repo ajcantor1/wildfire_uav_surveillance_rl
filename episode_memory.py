@@ -39,7 +39,7 @@ class EpisodeBuffer:
       for i in range(min_step):
         sample_buffer.append(episode[i])
     
-    return sample_buffer
+    return sample_buffer, min_step
     
   def __len__(self):
       return len(self.episodes)
