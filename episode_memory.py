@@ -29,11 +29,17 @@ class EpisodeBuffer:
 
   def sample(self, batch_size):
     
+    sample_buffer = []
+
     sample_episodes = random.sample(self.episodes, batch_size)
 
     min_step = min([len(episode) for episode in sample_episodes])
 
-    return [deque(islice(episode, 0, min_step)) for episode in sample_episodes], min_step
+    for episode in sample_episodes:
+      for i in range(min_step):
+        sample_buffer.append(episode[i])
+    
+    return sample_buffer
     
   def __len__(self):
       return len(self.episodes)
