@@ -13,10 +13,6 @@ class EpisodeMemory:
   def push(self, *args):
     self._episode.push(Transition(*args))
 
-  @property
-  def episode(self):
-    return self._episode
-
   def __getitem__(self, index):
     return self._episode[int(index)]
 
