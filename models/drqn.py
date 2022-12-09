@@ -6,8 +6,8 @@ import math
 
 class DRQN(BaseDQN):
 
-  def __init__(self, _channels, _height, _width, _outputs, _hidden_space = 200):
-    super().__init__(_channels, _height, _width, _outputs)
+  def __init__(self, _device, _channels, _height, _width, _outputs, _hidden_space = 200):
+    super().__init__(_device, _channels, _height, _width, _outputs)
 
     self.hidden_space = _hidden_space
 
