@@ -48,7 +48,7 @@ class EpisodeMemory():
       idx = np.random.randint(0, len(self.memory))
       sampled_buffer.append(self.memory[idx].sample(random_update=self.random_update))
 
-    return torch.cat(sampled_buffer), len(sampled_buffer[0]['observation']) # buffers, sequence_length
+    return sampled_buffer, len(sampled_buffer[0]['observation']) # buffers, sequence_length
 
   def __len__(self):
       return len(self.memory)
