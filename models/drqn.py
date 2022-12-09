@@ -44,7 +44,7 @@ class DRQN(BaseDQN):
       nn.ReLU(),
     )
 
-    self.ltsm = nn.LSTM(self.hidden_space, self.hidden_space)
+    self.ltsm = nn.LSTM(self.hidden_space, self.hidden_space, batch_first=True)
 
     self.fc3 = nn.Sequential(
       nn.Linear(self.hidden_space, self.hidden_space),
@@ -54,17 +54,18 @@ class DRQN(BaseDQN):
 
 
   def forward(self, belief_map, state_vector, hidden=None):
-    if not hidden:
-      h0 = torch.zeros([1, self.hidden_space, self.hidden_space])
-      c0 = torch.zeros([1, self.hidden_space, self.hidden_space])
-      hidden = (h0, c0)
+
     fc1_out = self.fc1(state_vector)
     conv_out = torch.flatten(self.conv(belief_map), 1)
     fc2_out = self.fc2(conv_out)
-
-    ltsm_out, new_hidden = self.ltsm(torch.cat((fc1_out, fc2_out), dim=1), hidden)
-    fc3_out = self.fc3(ltsm_out)
-    return fc3_out, new_hidden
+    new_hidden = None
+    ltsm_out = None
+    if hidden is None:
+      ltsm_out, new_hidden = self.ltsm(torch.cat((fc1_out, fc2_out), dim=1))
+    else:
+      ltsm_out, new_hidden = self.ltsm(torch.cat((fc1_out, fc2_out), dim=1), hidden)
+      fc3_out = self.fc3(ltsm_out)
+      return fc3_out, new_hidden
 
   def select_action(self, belief_map, state_vector, steps, hidden=None):
     sample = random.random()
