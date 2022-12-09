@@ -42,7 +42,7 @@ class DRQN(BaseDQN):
       nn.ReLU(),
     )
 
-    self.ltsm = nn.LSTM(self.hidden_space, self.hidden_space)
+    self.ltsm = nn.LSTM(self.hidden_space, self.hidden_space, batch_first=True)
 
     self.fc3 = nn.Sequential(
       nn.Linear(self.hidden_space, self.hidden_space),
