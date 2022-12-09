@@ -1,6 +1,7 @@
 from collections import deque
 import random
 import numpy as np
+import torch
 
 MAX_EPISODE_LENGTH = 200
 
@@ -47,7 +48,7 @@ class EpisodeMemory():
       idx = np.random.randint(0, len(self.memory))
       sampled_buffer.append(self.memory[idx].sample(random_update=self.random_update))
 
-    return sampled_buffer, len(sampled_buffer[0]['observation']) # buffers, sequence_length
+    return torch.cat(sampled_buffer), len(sampled_buffer[0]['observation']) # buffers, sequence_length
 
   def __len__(self):
       return len(self.memory)
@@ -74,28 +75,14 @@ class EpisodeBuffer:
     self.reward.append(transition[5])
         
   def sample(self, random_update=False, lookup_step=None, idx=None):
-    observation = np.array(self.observation)
-    state = np.array(self.state)
-    action = np.array(self.action)
-    next_observation = np.array(self.next_observation)
-    next_state = np.array(self.next_state)
-    reward = np.array(self.reward)
-
-    if random_update is True:
-      observation  = observation[idx:idx+lookup_step]
-      state  = state[idx:idx+lookup_step]
-      action = action[idx:idx+lookup_step]
-      next_observation = next_observation[idx:idx+lookup_step]
-      next_state = next_state[idx:idx+lookup_step]
-      reward = reward[idx:idx+lookup_step]
 
     return dict(
-      observation=observation,
-      state=state,
-      action=action,
-      next_observation=next_observation,
-      next_state=next_state,
-      reward=reward
+      observation=torch.cat(self.observation),
+      state=torch.cat(self.state),
+      action=torch.cat(self.action),
+      next_observation=torch.cat(self.next_observation),
+      next_state=torch.cat(self.next_state),
+      reward=torch.cat(self.reward)
     )
 
   def __len__(self):
