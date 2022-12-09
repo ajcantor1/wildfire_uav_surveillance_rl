@@ -73,7 +73,12 @@ class DRQN(BaseDQN):
       math.exp(-1. * steps / self.eps_decay)
     
     with torch.no_grad():
-      output, new_hidden = self(belief_map, state_vector, hidden)
+      output = None
+      new_hidden = None 
+      if hidden is None:
+        output, new_hidden = self(belief_map, state_vector)
+      else:
+        output, new_hidden = self(belief_map, state_vector, hidden)
       if sample > eps_threshold:
         return output.max(1)[1].view(1, 1), new_hidden
       else:
