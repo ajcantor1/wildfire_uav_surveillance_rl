@@ -2,6 +2,7 @@ from collections import deque
 import random
 import numpy as np
 import torch
+from replay_memory import ReplayMemory
 
 MAX_EPISODE_LENGTH = 200
 
@@ -26,7 +27,7 @@ class EpisodeMemory():
     ##################### RANDOM UPDATE ############################
     if self.random_update: # Random upodate
       sampled_episodes = random.sample(self.memory, batch_size)
-      
+  
 
       min_step = self.max_epi_len
 
@@ -66,7 +67,7 @@ class EpisodeBuffer:
     self.reward = []
 
 
-  def put(self, *transition):
+  def push(self, *transition):
     self.observation.append(transition[0])
     self.state.append(transition[1])
     self.action.append(transition[2])
@@ -75,15 +76,25 @@ class EpisodeBuffer:
     self.reward.append(transition[5])
         
   def sample(self, random_update=False, lookup_step=None, idx=None):
-
-    return dict(
-      observation=torch.cat(self.observation),
-      state=torch.cat(self.state),
-      action=torch.cat(self.action),
-      next_observation=torch.cat(self.next_observation),
-      next_state=torch.cat(self.next_state),
-      reward=torch.cat(self.reward)
-    )
+    if random_update is True:
+      return dict(
+        belief_map=self.observation[idx:idx+lookup_step],
+        state_vector=self.state[idx:idx+lookup_step],
+        action=self.action[idx:idx+lookup_step],
+        next_map=self.next_observation[idx:idx+lookup_step],
+        next_state_vector=self.next_state[idx:idx+lookup_step],
+        reward=self.reward[idx:idx+lookup_step]
+      )
+   
+    else:
+      return dict(
+        belief_map=self.observation,
+        state_vector=self.state,
+        action=self.action,
+        next_map=self.next_observation,
+        next_state_vector=self.next_state,
+        reward=self.reward
+      )
 
   def __len__(self):
       return len(self.observation)
