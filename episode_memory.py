@@ -74,12 +74,12 @@ class EpisodeBuffer:
     self.reward.append(transition[5])
         
   def sample(self, random_update=False, lookup_step=None, idx=None):
-    observation = np.array(self.observation.cpu())
-    state = np.array(self.state.cpu())
-    action = np.array(self.action.cpu())
-    next_observation = np.array(self.next_observation.cpu())
-    next_state = np.array(self.next_state.cpu())
-    reward = np.array(self.reward.cpu())
+    observation = np.array(self.observation)
+    state = np.array(self.state)
+    action = np.array(self.action)
+    next_observation = np.array(self.next_observation)
+    next_state = np.array(self.next_state)
+    reward = np.array(self.reward)
 
     if random_update is True:
       observation  = observation[idx:idx+lookup_step]
