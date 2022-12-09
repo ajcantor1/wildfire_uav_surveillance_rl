@@ -64,8 +64,8 @@ class DRQN(BaseDQN):
       ltsm_out, new_hidden = self.ltsm(torch.cat((fc1_out, fc2_out), dim=1))
     else:
       ltsm_out, new_hidden = self.ltsm(torch.cat((fc1_out, fc2_out), dim=1), hidden)
-      fc3_out = self.fc3(ltsm_out)
-      return fc3_out, new_hidden
+    fc3_out = self.fc3(ltsm_out)
+    return fc3_out, new_hidden
 
   def select_action(self, belief_map, state_vector, steps, hidden=None):
     sample = random.random()
