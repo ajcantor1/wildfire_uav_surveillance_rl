@@ -56,7 +56,7 @@ class BaseDQN(nn.Module):
     return self._eps_start
 
   @eps_start.setter
-  def device(self, _eps_start):
+  def eps_start(self, _eps_start):
     self._eps_start = _eps_start
 
   @property
@@ -64,7 +64,7 @@ class BaseDQN(nn.Module):
     return self._eps_end
 
   @eps_end.setter
-  def device(self, _eps_end):
+  def eps_end(self, _eps_end):
     self._eps_end = _eps_end
 
   @property
@@ -72,7 +72,7 @@ class BaseDQN(nn.Module):
     return self._eps_decay
 
   @eps_decay.setter
-  def device(self, _eps_decay):
+  def  eps_decay(self, _eps_decay):
     self._eps_decay = _eps_decay
     
   def __init__(self, _device, _channels, _height, _width, _outputs, _eps_start=EPS_START, _eps_end=EPS_END, _eps_decay=EPS_DECAY):
