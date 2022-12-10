@@ -3,7 +3,7 @@ import torch
 from models.basedqn import BaseDQN
 import random
 import math
-
+from torch.autograd import Variable
 class DRQN(BaseDQN):
 
   def __init__(self, _device, _channels, _height, _width, _outputs, _hidden_space = 200):
@@ -67,11 +67,8 @@ class DRQN(BaseDQN):
     fc3_out = self.fc3(ltsm_out)
     return fc3_out, new_hidden
 
-  def init_hidden_state(self, training=None, batch_size=1):
-    if training is True:
-      return torch.zeros([1, batch_size, self.hidden_space]), torch.zeros([1, batch_size, self.hidden_space])
-    else:
-      return torch.zeros([1, 1, self.hidden_space]), torch.zeros([1, 1, self.hidden_space])
+  def init_hidden_state(self):
+    return (Variable(torch.zeros(1, 1, self.hidden_space).float()), Variable(torch.zeros(1, 1, self.hidden_space).float()))
 
   def select_action(self, belief_map, state_vector, steps, hidden=None):
     sample = random.random()
