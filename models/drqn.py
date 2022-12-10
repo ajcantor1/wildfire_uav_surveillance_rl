@@ -67,6 +67,12 @@ class DRQN(BaseDQN):
     fc3_out = self.fc3(ltsm_out)
     return fc3_out, new_hidden
 
+  def init_hidden_state(self, batch_size, training=None):
+    if training is True:
+      return torch.zeros([1, batch_size, self.hidden_space]), torch.zeros([1, batch_size, self.hidden_space])
+    else:
+      return torch.zeros([1, 1, self.hidden_space]), torch.zeros([1, 1, self.hidden_space])
+
   def select_action(self, belief_map, state_vector, steps, hidden=None):
     sample = random.random()
     eps_threshold = self.eps_end + (self.eps_start - self.eps_end) * \
