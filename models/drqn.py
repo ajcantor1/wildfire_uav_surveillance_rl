@@ -68,7 +68,7 @@ class DRQN(BaseDQN):
     return fc3_out, new_hidden
 
   def init_hidden_state(self):
-    return (Variable(torch.zeros(1, self.hidden_space, device=self.device).float()), Variable(torch.zeros(1, self.hidden_space, device=self.device).float()))
+    return torch.zeros(1, self.hidden_space, device=self.device).float(), torch.zeros(1, self.hidden_space, device=self.device).float()
 
   def select_action(self, belief_map, state_vector, steps, hidden=None):
     sample = random.random()
