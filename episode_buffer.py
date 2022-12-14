@@ -13,7 +13,7 @@ class EpisodeBuffer:
 
   def sample(self, episode_length):
     
-    episode_batch = self.episodes[random.randint(0, len(self.episodes))]
+    episode_batch = self.episodes[random.randint(0, len(self.episodes)-1)]
 
     episode_start = random.randint(0, 30)
     episode_end  =  min(episode_start+episode_length, len(episode_batch))
