@@ -15,7 +15,7 @@ class EpisodeBuffer:
     
     episode_batch = self.episodes[random.randint(0, len(self.episodes)-1)]
 
-    episode_start = random.randint(0, 30)
+    episode_start = random.randint(0, 50)
     episode_end  =  min(episode_start+episode_length, len(episode_batch))
     episode_batch = episode_batch[episode_start:episode_end]
     
