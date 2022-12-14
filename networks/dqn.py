@@ -1,6 +1,6 @@
 import torch.nn as nn
 import torch
-from models.basedqn import BaseDQN
+from networks.basedqn import BaseDQN
 import math
 import random
 
