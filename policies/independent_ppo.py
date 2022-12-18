@@ -10,13 +10,13 @@ class IndependentPPO(BasePolicy):
     super().__init__(_device)
 
     self.ppo_actor = IndependentPPOActor(_device, _channels, _height, _width, _outputs).to(_device)
-    self.ppo_critic = IndependentPPOCritic(_device, _channels, _height, _width, _outputs).to(_device)
+    self.ppo_critic = IndependentPPOCritic(_device, _channels, _height, _width, 1).to(_device)
 
     self.optimizer_actor = torch.optim.Adam(params=self.ppo_actor.parameters(), lr=0.001)
     self.optimizer_critic = torch.optim.Adam(params=self.ppo_critic.parameters(), lr=0.001)
 
-    self.cov_var = torch.full(size=(self.action_dim,), fill_value=0.05)
-    self.cov_mat = torch.diag(self.cov_var).to(self.device)
+	  self.cov_var = torch.full(size=(_outputs,), fill_value=0.5)
+		self.cov_mat = torch.diag(self.cov_var)
 
   def init_hidden(self, batch_size):
       
