@@ -50,14 +50,19 @@ class PPONet(BaseDQN):
 
     self.fc4 = nn.Linear(_hidden_dim, _outputs)
 
-  def forward(self, belief_map, state_vector, hidden):
+  def forward(self, belief_map, state_vector, hidden = None):
 
     fc1_out = self.fc1(state_vector)
     conv_out = torch.flatten(self.conv(belief_map), 1)
     fc2_out = self.fc2(conv_out)
   
     fc3_out = torch.relu(self.fc3(torch.cat((fc1_out, fc2_out), dim=1)))
-    rnn_out = self.rnn(fc3_out, hidden)
+    rnn_out = None
+    hidden_out = None
+    if hidden is not None:
+      rnn_out, hidden_out = self.rnn(fc3_out, hidden)
+    else:
+      rnn_out, hidden_out = self.rnn(fc3_out)
 
     fc4_out = torch.sigmoid(self.fc4(rnn_out))
-    return fc4_out, rnn_out
+    return fc4_out, hidden_out
