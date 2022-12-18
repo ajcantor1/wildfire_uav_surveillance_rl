@@ -41,8 +41,7 @@ class PPONet(BaseDQN):
       nn.ReLU(),
     )
 
-    self.rnn = nn.GRUCell(_hidden_dim, _hidden_dim)
-
+    self.rnn = nn.LSTM(_hidden_dim, _hidden_dim batch_first=True)
     self.fc3 = nn.Sequential(
       nn.Linear(_hidden_dim, _hidden_dim),
       nn.ReLU()
