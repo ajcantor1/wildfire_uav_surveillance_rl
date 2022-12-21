@@ -42,6 +42,7 @@ class PPONet(BaseDQN):
     )
 
     self.rnn = nn.LSTM(_hidden_dim, _hidden_dim, batch_first=True)
+
     self.fc3 = nn.Sequential(
       nn.Linear(_hidden_dim, _hidden_dim),
       nn.ReLU()
@@ -55,7 +56,7 @@ class PPONet(BaseDQN):
     conv_out = torch.flatten(self.conv(belief_map), 1)
     fc2_out = self.fc2(conv_out)
   
-    fc3_out = torch.relu(self.fc3(torch.cat((fc1_out, fc2_out), dim=1)))
+    fc3_out = self.fc3(torch.cat((fc1_out, fc2_out), dim=1))
     rnn_out = None
     hidden_out = None
     if hidden is not None:
@@ -63,5 +64,5 @@ class PPONet(BaseDQN):
     else:
       rnn_out, hidden_out = self.rnn(fc3_out)
 
-    fc4_out = torch.sigmoid(self.fc4(rnn_out))
+    fc4_out = self.fc4(rnn_out)
     return fc4_out, hidden_out
