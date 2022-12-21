@@ -44,25 +44,22 @@ class PPONet(BaseDQN):
     self.rnn = nn.LSTM(_hidden_dim, _hidden_dim, batch_first=True)
 
     self.fc3 = nn.Sequential(
-      nn.Linear(_hidden_dim, _hidden_dim),
+      nn.Linear(_hidden_dim, _outputs),
       nn.ReLU()
     )
 
-    self.fc4 = nn.Linear(_hidden_dim, _outputs)
 
   def forward(self, belief_map, state_vector, hidden = None):
 
     fc1_out = self.fc1(state_vector)
     conv_out = torch.flatten(self.conv(belief_map), 1)
     fc2_out = self.fc2(conv_out)
-  
-    fc3_out = self.fc3(torch.cat((fc1_out, fc2_out), dim=1))
-    rnn_out = None
-    hidden_out = None
-    if hidden is not None:
-      rnn_out, hidden_out = self.rnn(fc3_out, hidden)
+    new_hidden = None
+    ltsm_out = None
+    if hidden is None:
+      ltsm_out, new_hidden = self.ltsm(torch.cat((fc1_out, fc2_out), dim=1))
     else:
-      rnn_out, hidden_out = self.rnn(fc3_out)
+      ltsm_out, new_hidden = self.ltsm(torch.cat((fc1_out, fc2_out), dim=1), hidden)
+    fc3_out = self.fc3(ltsm_out)
+    return fc3_out, new_hidden
 
-    fc4_out = self.fc4(rnn_out)
-    return fc4_out, hidden_out
