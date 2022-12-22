@@ -46,7 +46,7 @@ class PPONet(BaseDQN):
 
     self.actor = nn.Linear(200, _outputs)
 
-    self.critc = nn.Linear(200, 1)
+    self.critic = nn.Linear(200, 1)
 
   def forward(self, belief_map, state_vector):
 
