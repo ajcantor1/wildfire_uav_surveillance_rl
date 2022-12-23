@@ -47,8 +47,6 @@ class PPONet(BaseDQN):
       nn.ReLU(),
     )
 
-    
-
     self.actor = nn.Linear(200, _outputs)
 
     self.critic = nn.Linear(200, 1)
@@ -59,6 +57,6 @@ class PPONet(BaseDQN):
     conv_out = torch.flatten(self.conv(belief_map),1)
     fc2_out = self.fc2(conv_out)
     fc3_out = self.fc3(torch.cat((fc1_out, fc2_out), dim=1))
-    return F.softmax(self.actor(fc3_out), dim=1), self.critic(fc3_out)
+    return self.actor(fc3_out), self.critic(fc3_out)
 
 
