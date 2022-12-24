@@ -160,7 +160,7 @@ class Drone:
     return np.stack((self.time_elasped_map, self.belief_map), axis=0)[np.newaxis,...]
     
   def step(self, input):
-    print(input)
+    
     self.x +=  VELOCITY*math.cos(self.heading_angle)
     self.y +=  VELOCITY*math.sin(self.heading_angle)
     self.trajectory.append((self.x, self.y))  
