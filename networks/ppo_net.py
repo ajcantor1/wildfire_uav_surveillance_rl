@@ -64,10 +64,10 @@ class PPONet(BaseDQN):
     ltsm_out = None
     new_hidden = None
 
-    if hidden is None:
-      ltsm_out, new_hidden = self.ltsm(fc3_out)
-    else:
+    if hidden is not None:
       ltsm_out, new_hidden = self.ltsm(fc3_out, hidden)
+    else:
+      ltsm_out, new_hidden = self.ltsm(fc3_out)
 
     return self.actor(ltsm_out), self.critic(ltsm_out), new_hidden
 
