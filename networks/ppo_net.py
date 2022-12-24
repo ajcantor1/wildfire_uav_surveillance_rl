@@ -54,21 +54,13 @@ class PPONet(BaseDQN):
 
     self.critic = nn.Linear(200, 1)
 
-  def forward(self, belief_map, state_vector, hidden=None):
+  def forward(self, belief_map, state_vector):
 
     fc1_out = self.fc1(state_vector)
     conv_out = torch.flatten(self.conv(belief_map),1)
     fc2_out = self.fc2(conv_out)
+    
     fc3_out = self.fc3(torch.cat((fc1_out, fc2_out), dim=1))
-
-    ltsm_out = None
-    new_hidden = None
-
-    if hidden is not None:
-      ltsm_out, new_hidden = self.ltsm(fc3_out, hidden)
-    else:
-      ltsm_out, new_hidden = self.ltsm(fc3_out)
-
-    return self.actor(ltsm_out), self.critic(ltsm_out), new_hidden
+    return self.actor(fc3_out), self.critic(fc3_out)
 
 
