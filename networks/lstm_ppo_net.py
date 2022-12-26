@@ -13,7 +13,7 @@ class LSTMPPONet(PPONet):
     self.lstm = nn.LSTM(200, 200, batch_first=True)
 
 
-  def forward(self, belief_map, state_vector, sequence_length=1, hidden = None):
+  def forward(self, belief_map, state_vector, hidden = None, sequence_length=1):
 
     fc1_out = self.fc1(state_vector)
     conv_out = torch.flatten(self.conv(belief_map),1)
