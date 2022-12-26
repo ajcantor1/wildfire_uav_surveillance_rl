@@ -35,6 +35,8 @@ class LSTMPPONet(PPONet):
 
   def _init_recurrent_cell_states(self, num_sequences):
 
+    num_sequences = 1 if num_sequences is None else num_sequences
+
     hidden = torch.zeros(num_sequences, 200, dtype=torch.float32, device=self.device).unsqueeze(0)
     cell = torch.zeros(num_sequences, 200, dtype=torch.float32, device=self.device).unsqueeze(0)
     return hidden, cell
