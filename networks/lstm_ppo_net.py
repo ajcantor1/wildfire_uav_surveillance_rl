@@ -37,6 +37,6 @@ class LSTMPPONet(PPONet):
 
     num_sequences = 1 if num_sequences is None else num_sequences
 
-    hidden = torch.zeros(num_sequences, 200, dtype=torch.float32, device=self.device)
-    cell = torch.zeros(num_sequences, 200, dtype=torch.float32, device=self.device)
+    hidden = torch.zeros((num_sequences, 200), dtype=torch.float32, device=self.device)
+    cell = torch.zeros((num_sequences, 200), dtype=torch.float32, device=self.device)
     return hidden, cell
