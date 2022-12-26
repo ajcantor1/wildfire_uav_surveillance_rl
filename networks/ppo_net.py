@@ -42,17 +42,16 @@ class PPONet(BaseDQN):
       nn.ReLU(),
     )
 
-
     self.fc3 = nn.Sequential(
       nn.Linear(200, 200),
       nn.ReLU(),
     )
     
-    self.ltsm = nn.LSTM(200, 200, batch_first=True)
-
     self.actor = nn.Linear(200, _outputs)
 
     self.critic = nn.Linear(200, 1)
+
+    self._initialize_weights()
 
   def forward(self, belief_map, state_vector):
 
@@ -62,5 +61,12 @@ class PPONet(BaseDQN):
     
     fc3_out = self.fc3(torch.cat((fc1_out, fc2_out), dim=1))
     return self.actor(fc3_out), self.critic(fc3_out)
+
+  def _initialize_weights(self):
+    for module in self.modules():
+      if isinstance(module, nn.Conv2d) or isinstance(module, nn.Linear):
+        nn.init.orthogonal_(module.weight, nn.init.calculate_gain('relu'))
+        nn.init.constant_(module.bias, 0)
+
 
 
