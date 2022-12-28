@@ -61,38 +61,7 @@ class BaseDQN(nn.Module):
     self._outputs = _outputs
     self._device = _device
 
-    self.fc1  = nn.Sequential(
-      nn.Linear(5, 100),
-      nn.ReLU(),
-      nn.Linear(100, 100),
-      nn.ReLU(),
-      nn.Linear(100, 100),
-      nn.ReLU(),
-      nn.Linear(100, 100),
-      nn.ReLU(),
-      nn.Linear(100, 100),
-      nn.ReLU()
-    )
-
-    self.conv = nn.Sequential(
-      nn.Conv2d(2, 64, kernel_size=3),
-      nn.ReLU(),
-      nn.MaxPool2d(2, stride=2),
-      nn.Conv2d(64, 64, kernel_size=3),
-      nn.ReLU(),
-      nn.Conv2d(64, 64, kernel_size=3),
-      nn.ReLU(),
-      nn.MaxPool2d(2, stride=2)
-    )
-  
-    conv_out_size = self._get_conv_out()
-
-    self.fc2 = nn.Sequential(
-      nn.Linear(conv_out_size, 500),
-      nn.ReLU(),
-      nn.Linear(500, 100),
-      nn.ReLU(),
-    )
+    self.to(device=_device)
   
 
 
