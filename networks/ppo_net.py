@@ -9,7 +9,7 @@ class PPONet(BaseDQN):
   def __init__(self, _device, _channels, _height, _width, _outputs):
 
     super().__init__(_device, _channels, _height, _width, _outputs)
-
+    self.to(device=_device)
     self.fc1  = nn.Sequential(
       nn.Linear(5, 100),
       nn.ReLU(),
@@ -51,8 +51,9 @@ class PPONet(BaseDQN):
     self.actor = nn.Linear(200, _outputs)
 
     self.critic = nn.Linear(200, 1)
-
     self._initialize_weights()
+
+
 
   def forward(self, belief_map, state_vector):
 
