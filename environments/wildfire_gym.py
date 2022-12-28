@@ -1,8 +1,8 @@
 from gym import Env
 from gym import spaces
-from env.util.action_space import MultiAgentActionSpace
-from env.probabilistic_fire_env import ProbabilisticFireEnv
-from env.drone_env import DronesEnv
+from environments.util.action_space import MultiAgentActionSpace
+from environments.probabilistic_fire_env import ProbabilisticFireEnv
+from environments.drone_env import DronesEnv
 
 HEIGHT = 100
 WIDTH  = 100

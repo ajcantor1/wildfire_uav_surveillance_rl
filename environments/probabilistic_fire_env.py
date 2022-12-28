@@ -1,4 +1,4 @@
-from env.abstract_fire_env import AbstractFireEnv
+from environments.abstract_fire_env import AbstractFireEnv
 import numpy as np
 import random
 height = 100
