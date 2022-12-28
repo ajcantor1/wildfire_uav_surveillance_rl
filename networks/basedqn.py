@@ -51,31 +51,8 @@ class BaseDQN(nn.Module):
   def device(self, _device):
     self._device = _device
 
-  @property
-  def eps_start(self):
-    return self._eps_start
-
-  @eps_start.setter
-  def eps_start(self, _eps_start):
-    self._eps_start = _eps_start
-
-  @property
-  def eps_end(self):
-    return self._eps_end
-
-  @eps_end.setter
-  def eps_end(self, _eps_end):
-    self._eps_end = _eps_end
-
-  @property
-  def eps_decay(self):
-    return self._eps_decay
-
-  @eps_decay.setter
-  def  eps_decay(self, _eps_decay):
-    self._eps_decay = _eps_decay
     
-  def __init__(self, _device, _channels, _height, _width, _outputs, _eps_start=EPS_START, _eps_end=EPS_END, _eps_decay=EPS_DECAY):
+  def __init__(self, _device, _channels, _height, _width, _outputs):
     super().__init__()
     
     self._channels = _channels
@@ -84,12 +61,42 @@ class BaseDQN(nn.Module):
     self._outputs = _outputs
     self._device = _device
 
-    self._eps_start = _eps_start
-    self._eps_end = _eps_end
-    self._eps_decay = _eps_decay
+    self.fc1  = nn.Sequential(
+      nn.Linear(5, 100),
+      nn.ReLU(),
+      nn.Linear(100, 100),
+      nn.ReLU(),
+      nn.Linear(100, 100),
+      nn.ReLU(),
+      nn.Linear(100, 100),
+      nn.ReLU(),
+      nn.Linear(100, 100),
+      nn.ReLU()
+    )
+
+    self.conv = nn.Sequential(
+      nn.Conv2d(2, 64, kernel_size=3),
+      nn.ReLU(),
+      nn.MaxPool2d(2, stride=2),
+      nn.Conv2d(64, 64, kernel_size=3),
+      nn.ReLU(),
+      nn.Conv2d(64, 64, kernel_size=3),
+      nn.ReLU(),
+      nn.MaxPool2d(2, stride=2)
+    )
+  
+    conv_out_size = self._get_conv_out()
+
+    self.fc2 = nn.Sequential(
+      nn.Linear(conv_out_size, 500),
+      nn.ReLU(),
+      nn.Linear(500, 100),
+      nn.ReLU(),
+    )
+  
+
+
 
   def forward(self, belief_map, state_vector):
     pass
 
-  def select_action(self, belief_map, state_vector, steps):
-    pass
