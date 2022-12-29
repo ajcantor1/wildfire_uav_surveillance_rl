@@ -9,7 +9,7 @@ WIDTH  = 100
 DT     = 0.5      
 DTI    = 0.1  
 
-class WildFireGym(Env):
+class SharedWildFireGym(Env):
 
     def __init__ (self, _n_agents = 2):
         self._n_agents = _n_agents
