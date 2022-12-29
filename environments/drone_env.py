@@ -291,8 +291,23 @@ class DronesEnv:
     self._time_elapsed_channel = _time_elapsed_channel
 
   @property
+  def observation(self):
+    return np.stack((self.time_map_channel/250, self.belief_map_channel.copy()), axis=0)[np.newaxis,...]
+
+  @property
   def drones(self):
     return self._drones
+
+  @property
+  def state(self):
+    return np.array([
+        self._drones[0].bank_angle, 
+        self._drones[0].rho,
+        self._drones[0].theta,
+        self._drones[0].psi,
+        self._drones[1].bank_angle
+    ])[np.newaxis,...]
+  
 
   def step(self, input, fireMap):
     self._drones[0].step(input[0])
@@ -345,6 +360,7 @@ class DronesEnv:
     ax.plot(x1, y1, '--')
     ax.plot(x2, y2, '--')
 
+    
   def plot_trajectory(self, fig, ax):
       
     ax.axis(xmin=0, xmax=self._width)

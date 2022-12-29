@@ -1,8 +1,8 @@
 from gym import Env
 from gym import spaces
-from env.util.action_space import MultiAgentActionSpace
-from env.probabilistic_fire_env import ProbabilisticFireEnv
-from env.drone_env import DronesEnv
+from environments.util.action_space import MultiAgentActionSpace
+from environments.probabilistic_fire_env import ProbabilisticFireEnv
+from environments.drone_env import DronesEnv
 
 HEIGHT = 100
 WIDTH  = 100
@@ -32,13 +32,7 @@ class WildFireGym(Env):
         return self.get_obs()
 
     def get_obs(self):
-        states = []
-        for i in range(self.n_agents):
-            states.append({
-                'state_vector': self.dronesEnv.drones[i].state,
-                'belief_map': self.dronesEnv.drones[i].observation
-            })      
-        return states
+        return {'belief_map': self.dronesEnv.observation, 'state_vector': self.dronesEnv.state}
 
     def step (self, action_n):
         if self.done:
