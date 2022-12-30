@@ -292,7 +292,7 @@ class DronesEnv:
 
   @property
   def observation(self):
-    return np.stack((self.time_map_channel/250, self.belief_map_channel.copy()), axis=0)[np.newaxis,...]
+    return np.stack((self.time_map_channel/250, self.belief_map_channel), axis=0)[np.newaxis,...]
 
   @property
   def drones(self):

@@ -53,4 +53,12 @@ class SharedWildFireGym(Env):
         return self.get_obs(), rewards, self.done, self.info
    
 
+    def render(self, fig, ax):
+        self.dronesEnv.plot_drones(fig, ax[0])
+        self.dronesEnv.plot_belief_map(fig, ax[1])
+        self.dronesEnv.plot_time_elapsed(fig, ax[2])
+        self.dronesEnv.plot_trajectory(fig, ax[3])
+        self.fireEnv.plot_heat_map(fig, ax[4])
+   
+
 
