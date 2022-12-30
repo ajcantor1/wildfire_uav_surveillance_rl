@@ -11,7 +11,6 @@ class PPONet(BaseDQN):
     super().__init__(_device, _channels, _height, _width, _outputs)
     self.to(device=_device)
     self.fc1  = nn.Sequential(
-      nn.BatchNorm1d(5),
       nn.Linear(5, 50),
       nn.BatchNorm1d(50),
       nn.ReLU(),
