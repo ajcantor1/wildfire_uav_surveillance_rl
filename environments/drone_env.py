@@ -225,8 +225,11 @@ class DronesEnv:
     self._belief_map_channel = np.zeros(shape=(self._height, self._width))
     self._time_elapsed_channel = np.full(shape=(self._height, self._width), fill_value=250)
 
-    self._drone_scan(self._drones[0], fireMap)
-    self._drone_scan(self._drones[1], fireMap)
+    mask1 = self._drone_scan_mask(self._drones[0])
+    mask2 = self._drone_scan_mask(self._drones[1])
+
+    mask = mask1+mask2
+    self._drone_scan(mask, fireMap)
 
   def _drone_scan_mask(self, drone):
     Y, X = np.ogrid[:height, :width]
@@ -283,14 +286,16 @@ class DronesEnv:
     reward2 = self._reward(self._drones[1], fireMap)
 
     mask = mask1+mask2
+    self._drone_scan(mask, fireMap)
 
+    return reward1, reward2
+
+  def _drone_scan(self, mask, fireMap):
     self._belief_map_channel[mask] = fireMap[mask]
     
     self._time_elapsed_channel[mask] = 0
 
     self._time_elapsed_channel[~mask & (self._time_elapsed_channel < 250)] += 1
-
-    return reward1, reward2
 
   def plot_time_elapsed(self, fig, ax):
     ax.axis(xmin=0, xmax=width)
