@@ -178,39 +178,9 @@ class Drone:
     if self.bank_angle >  50.0*np.pi/180.0 or self.bank_angle < -50.0*np.pi/180.0:
       self.bank_angle -= action
 
-  @property
-  def reward(self):
-
-    return self._reward1()+self._reward2()+self._reward3()+self._reward4()
-      
-
-  def _reward1(self):
-    
-    fire_points = np.argwhere(self._droneEnv.belief_map_channel == 1)
-
-    if len(fire_points) == 0:
-      return -LAMBDA_1*141.42
-    else:
-      euclidean_distances = [euclidean_distance(self.x, self.y, fire_point[1], fire_point[0]) for fire_point in fire_points]
-      return -LAMBDA_1*min(euclidean_distances) 
 
 
-  def _reward2(self):
 
-    min_drone_y = int(max(self.y-self._droneEnv.scan_radius,0))
-    max_drone_y = int(min(self.y+self._droneEnv.scan_radius, height))
-
-    min_drone_x = int(max(self.x-self._droneEnv.scan_radius,0))
-    max_drone_x = int(min(self.x+self._droneEnv.scan_radius, width))
-    
-    radar = self._droneEnv.belief_map_channel[min_drone_y:max_drone_y,min_drone_x:max_drone_x]
-    return -LAMBDA_2*(np.count_nonzero(radar==0))
-
-  def _reward3(self):
-    return -LAMBDA_3*(np.deg2rad(self.bank_angle)**2)
-
-  def _reward4(self):
-    return -LAMBDA_4*math.exp(-self.rho/C)
 
   def plot_time_elapsed(self, fig, ax):
 
@@ -252,27 +222,17 @@ class DronesEnv:
     self._drones[0].reset()
     self._drones[1].reset()
 
-    self._belief_map_channel = fireMap.copy()
-    #self._belief_map_channel = np.zeros(shape=(self._height, self._width))
+    self._belief_map_channel = np.zeros(shape=(self._height, self._width))
     self._time_elapsed_channel = np.full(shape=(self._height, self._width), fill_value=250)
 
     self._drone_scan(self._drones[0], fireMap)
     self._drone_scan(self._drones[1], fireMap)
 
-  def _drone_scan(self, drone, fireMap=np.nan):
-
+  def _drone_scan_mask(self, drone):
     Y, X = np.ogrid[:height, :width]
     dist_from_center = np.sqrt((X - drone.x)**2 + (Y-drone.y)**2)
     mask = dist_from_center <= self.scan_radius
-
-    reward = np.count_nonzero(mask & (self._belief_map_channel==0) & (fireMap==1))
-    self._belief_map_channel[mask] = fireMap[mask]
-    
-    self._time_elapsed_channel[mask] = 0
-
-    self._time_elapsed_channel[~mask & (self._time_elapsed_channel < 250)] += 1
-
-    return reward
+    return mask
 
   @property 
   def belief_map_channel(self):
@@ -308,12 +268,28 @@ class DronesEnv:
         self._drones[1].bank_angle
     ])[np.newaxis,...]
   
+  def _reward(self, mask, fireMap):
 
+    return np.count_nonzero(mask & (self._belief_map_channel==0) & (fireMap==1))
+      
   def step(self, input, fireMap):
     self._drones[0].step(input[0])
     self._drones[1].step(input[1])
-    reward1 = self._drone_scan(self._drones[0], fireMap)
-    reward2 = self._drone_scan(self._drones[1], fireMap)
+
+    mask1 = self._drone_scan_mask(self._drones[0])
+    mask2 = self._drone_scan_mask(self._drones[1])
+
+    reward1 = self._reward(self._drones[0], fireMap)
+    reward2 = self._reward(self._drones[1], fireMap)
+
+    mask = mask1+mask2
+
+    self._belief_map_channel[mask] = fireMap[mask]
+    
+    self._time_elapsed_channel[mask] = 0
+
+    self._time_elapsed_channel[~mask & (self._time_elapsed_channel < 250)] += 1
+
     return reward1, reward2
 
   def plot_time_elapsed(self, fig, ax):
