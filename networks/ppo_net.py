@@ -11,19 +11,21 @@ class PPONet(BaseDQN):
     super().__init__(_device, _channels, _height, _width, _outputs)
     self.to(device=_device)
     self.fc1  = nn.Sequential(
-      nn.Linear(5, 100),
+      nn.BatchNorm1d(5),
+      nn.Linear(5, 50),
       nn.ReLU(),
-      nn.Linear(100, 100),
+      nn.Linear(50, 50),
       nn.ReLU(),
-      nn.Linear(100, 100),
+      nn.Linear(50, 50),
       nn.ReLU(),
-      nn.Linear(100, 100),
+      nn.Linear(50, 50),
       nn.ReLU(),
-      nn.Linear(100, 100),
+      nn.Linear(50, 50),
       nn.ReLU()
     )
 
     self.conv = nn.Sequential(
+      nn.BatchNorm2d(100),
       nn.Conv2d(2, 64, kernel_size=3),
       nn.ReLU(),
       nn.MaxPool2d(2, stride=2),
@@ -44,15 +46,14 @@ class PPONet(BaseDQN):
     )
 
     self.fc3 = nn.Sequential(
-      nn.Linear(200, 200),
+      nn.Linear(150, 256),
       nn.ReLU(),
     )
     
-    self.actor = nn.Linear(200, _outputs)
+    self.actor = nn.Linear(256, _outputs)
 
-    self.critic = nn.Linear(200, 1)
+    self.critic = nn.Linear(256, 1)
     self._initialize_weights()
-
 
 
   def forward(self, belief_map, state_vector):
