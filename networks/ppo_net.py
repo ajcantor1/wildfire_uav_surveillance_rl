@@ -13,25 +13,32 @@ class PPONet(BaseDQN):
     self.fc1  = nn.Sequential(
       nn.BatchNorm1d(5),
       nn.Linear(5, 50),
+      nn.BatchNorm1d(50),
       nn.ReLU(),
       nn.Linear(50, 50),
+      nn.BatchNorm1d(50),
       nn.ReLU(),
       nn.Linear(50, 50),
+      nn.BatchNorm1d(50),
       nn.ReLU(),
       nn.Linear(50, 50),
+      nn.BatchNorm1d(50),
       nn.ReLU(),
       nn.Linear(50, 50),
+      nn.BatchNorm1d(50),
       nn.ReLU()
     )
 
     self.conv = nn.Sequential(
-      nn.BatchNorm2d(100),
       nn.Conv2d(2, 64, kernel_size=3),
+      nn.BatchNorm2d(64),
       nn.ReLU(),
       nn.MaxPool2d(2, stride=2),
       nn.Conv2d(64, 64, kernel_size=3),
+      nn.BatchNorm2d(64),
       nn.ReLU(),
       nn.Conv2d(64, 64, kernel_size=3),
+      nn.BatchNorm2d(64),
       nn.ReLU(),
       nn.MaxPool2d(2, stride=2)
     )
