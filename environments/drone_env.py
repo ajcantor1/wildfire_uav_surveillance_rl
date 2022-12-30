@@ -282,8 +282,8 @@ class DronesEnv:
     mask1 = self._drone_scan_mask(self._drones[0])
     mask2 = self._drone_scan_mask(self._drones[1])
 
-    reward1 = self._reward(self._drones[0], fireMap)
-    reward2 = self._reward(self._drones[1], fireMap)
+    reward1 = self._reward(mask1, fireMap)
+    reward2 = self._reward(mask2, fireMap)
 
     mask = mask1+mask2
     self._drone_scan(mask, fireMap)
