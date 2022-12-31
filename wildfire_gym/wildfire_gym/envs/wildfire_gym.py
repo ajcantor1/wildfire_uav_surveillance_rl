@@ -25,7 +25,7 @@ class WildFireGym(Env):
 
     def reset(self):
         seed = self.fireEnv.reset()
-        self.dronesEnv.reset(seed, self.fireEnv.observation)
+        self.dronesEnv.reset(self.fireEnv.observation, seed)
         self.time_steps = 0
         self.done = False
         self.observation = None
