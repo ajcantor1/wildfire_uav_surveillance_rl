@@ -46,9 +46,10 @@ class AbstractFireEnv(metaclass = ABCMeta):
   def reset(self):
     self._time_steps = 0
     self.observation = self.reset_observation()
+    seed = self.observation.copy()
     for _ in range(30):
       self.step()
-    return self.observation
+    return seed
 
   def fire_in_range(self,margin=2):
     burnX, burnY = np.where(self.observation==1)
