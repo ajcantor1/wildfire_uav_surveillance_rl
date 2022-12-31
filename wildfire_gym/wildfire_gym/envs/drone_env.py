@@ -216,7 +216,7 @@ class DronesEnv:
   def scan_radius(self, _scan_radius):
     self._scan_radius = _scan_radius
         
-  def reset(self, fireMap, seed):
+  def reset(self, seed, fireMap):
 
 
     self._drones[0].reset()
