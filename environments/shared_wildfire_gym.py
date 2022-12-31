@@ -3,7 +3,7 @@ from gym import spaces
 from environments.util.action_space import MultiAgentActionSpace
 from environments.probabilistic_fire_env import ProbabilisticFireEnv
 from environments.drone_env import DronesEnv
-
+import numpy as np
 HEIGHT = 100
 WIDTH  = 100
 DT     = 0.5      
@@ -25,11 +25,11 @@ class SharedWildFireGym(Env):
 
     def reset(self):
         seed = self.fireEnv.reset()
-        self.dronesEnv.reset(seed)
+        self.dronesEnv.reset(seed, self.fireEnv.observation)
         self.time_steps = 0
         self.done = False
-        self.observation = None
         return self.get_obs()
+
 
     def get_obs(self):
         return {'belief_map': self.dronesEnv.observation, 'state_vector': self.dronesEnv.state}
