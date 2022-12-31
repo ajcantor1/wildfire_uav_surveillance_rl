@@ -216,13 +216,13 @@ class DronesEnv:
   def scan_radius(self, _scan_radius):
     self._scan_radius = _scan_radius
         
-  def reset(self, fireMap=np.nan):
+  def reset(self, fireMap, seed):
 
 
     self._drones[0].reset()
     self._drones[1].reset()
 
-    self._belief_map_channel = np.zeros(shape=(self._height, self._width))
+    self._belief_map_channel = seed
     self._time_elapsed_channel = np.full(shape=(self._height, self._width), fill_value=250)
 
     mask1 = self._drone_scan_mask(self._drones[0])
