@@ -50,7 +50,7 @@ class PPONet(BaseDQN):
     
     self.actor = nn.Linear(200, _outputs)
 
-    self.critic = nn.Linear(256, 1)
+    self.critic = nn.Linear(200, 1)
     self._initialize_weights()
 
 
