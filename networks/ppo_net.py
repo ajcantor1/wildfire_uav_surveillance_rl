@@ -17,19 +17,15 @@ class PPONet(BaseDQN):
       nn.ReLU(),
       nn.Linear(50, 50),
       nn.ReLU(),
-      nn.Linear(50, 50),
-      nn.ReLU(),
-      nn.Linear(50, 50),
-      nn.ReLU()
     )
 
     self.conv = nn.Sequential(
-      nn.Conv2d(2, 64, kernel_size=3),
+      nn.Conv2d(2, 32, kernel_size=3),
       nn.ReLU(),
       nn.MaxPool2d(2, stride=2),
-      nn.Conv2d(64, 64, kernel_size=3),
+      nn.Conv2d(32, 32, kernel_size=3),
       nn.ReLU(),
-      nn.Conv2d(64, 64, kernel_size=3),
+      nn.Conv2d(32, 32, kernel_size=3),
       nn.ReLU(),
       nn.MaxPool2d(2, stride=2)
     )
@@ -37,20 +33,13 @@ class PPONet(BaseDQN):
     conv_out_size = self._get_conv_out()
 
     self.fc2 = nn.Sequential(
-      nn.Linear(conv_out_size, 500),
-      nn.ReLU(),
-      nn.Linear(500, 100),
+      nn.Linear(conv_out_size+50, 256),
       nn.ReLU(),
     )
 
-    self.fc3 = nn.Sequential(
-      nn.Linear(150, 200),
-      nn.ReLU(),
-    )
-    
-    self.actor = nn.Linear(200, _outputs)
+    self.actor = nn.Linear(256, _outputs)
 
-    self.critic = nn.Linear(200, 1)
+    self.critic = nn.Linear(256, 1)
     self._initialize_weights()
 
 
