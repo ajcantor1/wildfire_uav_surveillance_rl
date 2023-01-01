@@ -13,7 +13,7 @@ class WildFireGym(Env):
 
     def __init__ (self, _n_agents = 2):
         self._n_agents = _n_agents
-        self.action_space = MultiAgentActionSpace([spaces.Discrete(2) for _ in range(self.n_agents)])
+        self.action_space = [spaces.Discrete(2) for _ in range(self.n_agents)]
         self.fireEnv = ProbabilisticFireEnv(HEIGHT, WIDTH)
         self.dronesEnv = DronesEnv(HEIGHT, WIDTH, DT, DTI) 
         self.info = {}

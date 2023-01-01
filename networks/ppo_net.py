@@ -44,11 +44,11 @@ class PPONet(BaseDQN):
     )
 
     self.fc3 = nn.Sequential(
-      nn.Linear(150, 256),
+      nn.Linear(150, 200),
       nn.ReLU(),
     )
     
-    self.actor = nn.Linear(256, _outputs)
+    self.actor = nn.Linear(200, _outputs)
 
     self.critic = nn.Linear(256, 1)
     self._initialize_weights()
